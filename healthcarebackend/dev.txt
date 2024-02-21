@@ -1,0 +1,7 @@
+user signup -> body -> username, first name, lastname, password
+
+UserCred -> User firstname, lastname, username, password schema
+
+UserDocument -> user Document Schema
+
+token -> data is userName
