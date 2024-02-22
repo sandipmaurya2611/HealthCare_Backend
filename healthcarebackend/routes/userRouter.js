@@ -3,7 +3,7 @@ const { UserCred, UserDocument} = require("../database/db");
 const userRouter = express();
 const jwt = require('jsonwebtoken');
 const userMid = require("../middleware/userMid");
-const {upload} = require("../middleware/multer");
+const {upload} = require("../middleware/userDocumentMulter");
 const {readFileSync} = require("fs");
 const {join} = require("path");
 const key = "AniketBhaiLikesBhabhi";
@@ -70,7 +70,6 @@ userRouter.post("/addreport", userMid, upload.single('file'),(req, res) => {
 
     const { filename, mimetype, buffer } = req.file;
 
-    // Convert buffer to base64 string
     const imageBase64 = buffer.toString('base64');
 
 const userId =req.userId
@@ -78,7 +77,7 @@ const userId =req.userId
         { userId },
         { $push: { images: { filename, contentType: mimetype, imageBase64 } } },
 
-        { upsert: true, new: true } // upsert: true creates a new document if it doesn't exist, new: true returns the updated document
+        { upsert: true, new: true }
     )
         .then((userDocument) => {
             res.json({ msg: "User information and image added successfully", userDocument });
@@ -90,5 +89,20 @@ const userId =req.userId
 
 
 });
+
+userRouter.get('/reports', userMid, async (req,res)=>{
+    try{
+        const document = await UserDocument.findOne({userId:req.userId})
+        if (!document){
+            res.json({msg:"no document found"})
+        }
+        else{
+            res.json(document.images)
+        }
+    }
+    catch {
+res.json({msg:"internal error"})
+    }
+})
 
 module.exports = { userRouter };

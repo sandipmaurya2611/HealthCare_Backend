@@ -46,11 +46,19 @@ const DocterDocumentSchema = new mongoose.Schema({
         ref: 'DocterCred'
     },
     gender:String,
-    contactInfo:[String],
+    contactInfo1:String,
+    contactInfo2:String,
     govId:String,
-    mediDeg:[String],
+    mediDeg1:String,
+    mediDeg2:String,
+    mediDeg3:String,
     medSchool:String,
-    professionalExp:String
+    professionalExp:String,
+    certificates:[{
+        filename: String,
+        contentType: String,
+        imageBase64: String
+    }]
 
 })
 
@@ -63,6 +71,8 @@ ratingSum:Number,
     totalRating: Number,
     ratedUsers:[String]
 })
+
+
 const UserCred = mongoose.model('UserCred', UserCredSchema);
 const UserDocument  = mongoose.model('UserDocument', UserDocumentSchema);
 const DocterCred  = mongoose.model('DocterCred', DocterCredSchema);
